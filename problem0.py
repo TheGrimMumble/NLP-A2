@@ -1,55 +1,51 @@
 from nltk.corpus import brown
-from nltk.tokenize import sent_tokenize
+from nltk.tokenize import sent_tokenize, word_tokenize
 from collections import Counter
 import matplotlib, re, time
 
-def words_in_corpus():
-    all_words = list(brown.words())
-    dic = Counter(all_words)
-    final = sorted(dic.items(), key=lambda value: value[1], reverse=True)
-    for i in range(30):
-        print(final[i])
-    pass
 
-words_in_corpus()
+def unique_words_by_frequency(input_word_list):
+    all_lower_case = [w.lower() for w in input_word_list]
+    frequency_counter = Counter(all_lower_case)
+    return sorted(frequency_counter.items(), key=lambda value: value[1], reverse=True)
 
-def testing():
-    print(len(brown.words()))
-    for k in range(1, 4):
-        start = time.time()
-        length = 10 ** k
-        dic = {brown.words()[i]: 0 for i in range(length)}
-        for i in range(length):
-            dic[brown.words()[i]] += 1
-        final = sorted(dic.items(), key=lambda value: value[1], reverse=True)
-        end = time.time()
-        print(final[0], f'Time:{end - start}')
 
-testing()
-
-def unique_words_by_frequency(corpus_sentences, only_words=True):
-    word_def = re.compile("^[a-zA-Z]+[\-']*$")
-    for i in range(20):
-        for j in corpus_sentences[i]:
-            if word_def.fullmatch(corpus_sentences[i][j]):
-                print(corpus_sentences[i][j])
-            else:
-                print(f'not accepted:{corpus_sentences[i][j]}')
-    if only_words:
-        # give only a list of ordered words
-        pass
-    if not only_words:
-        # give: list of ordered words, list of respective frequency, dictionary of information
-        pass
-
-"""
-what about it's, september-october, capital letters?
-
-"""
+def get_info(sentences):
+    all_corpus_sents = [' '.join(sentences[i]) for i in range(len(sentences))]
+    tokens = [word_tokenize(s) for s in all_corpus_sents]
+    mean_words_per_sent = sum([len(w) for w in sentences]) / len(sentences)
+    # run default part of speech tagger, id ten most frequent POS tags
+    return f'Number of Tokens: {len(tokens)}/n' \
+            f'Average number of words per sentence: {mean_words_per_sent}'
 
 
 def plot_zipfs_law(input_data, log_log=False):
     pass
 
 
-#unique_words_by_frequency(brown.sents())
+def test_process_time():
+    start = time.time()
+    # paste function here
+    end = time.time()
+    print(f'Processing time: {end - start}')
+
+
+def collect_data(WORDS=False, SENTENCES=False):
+    if WORDS:
+        corpus_words = list(brown.words())
+        mean_word_length = sum([len(w) for w in corpus_words]) / len(corpus_words)
+        word_frequencies = unique_words_by_frequency(corpus_words)
+        return word_frequencies, len(word_frequencies), len(corpus_words), \
+                mean_word_length
+    if SENTENCES:
+        corpus_sentences = list(brown.sents())
+        info = get_info(corpus_sentences)
+        return info
+
+#word_frequencies, unique_words, sum_all_words, average_word_len = 
+print(collect_data(WORDS=True))
+
+
+"""
+what about it's, september-october, capital letters?
+"""
