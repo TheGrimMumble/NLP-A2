@@ -12,22 +12,29 @@ import numpy as np
 from generate import GENERATE
 
 
-vocab = open("brown_vocab_100.txt")
-
-#load the indices dictionary
+vocab = "brown_vocab_100.txt"
 word_index_dict = {}
-for i, line in enumerate(vocab):
-    #TODO: import part 1 code to build dictionary
 
-f = open("brown_100.txt")
+# read brown_vocab_100.txt into word_index_dict
+with open(vocab) as file:
+    for i, word in enumerate(file):
+        word = word.rstrip()
+        word_index_dict[word] = i
 
-counts = #TODO: initialize counts to a zero vector
+# initialize counts to a zero vector
+counts = np.zeros(len(word_index_dict))
 
-#TODO: iterate through file and update counts
+# iterate through file and update counts
+with open("brown_100.txt") as text:
+    for s in text:
+        for w in s.split():
+            current_word = w.lower()
+            counts[word_index_dict[current_word]] += 1
 
-f.close()
+# print and normalize counts.
+print(counts)
 
-#TODO: normalize and writeout counts. 
+probs = counts / np.sum(counts)
 
-
-
+with open("unigram_probs.txt", "w") as file:
+    file.write(str(probs))
