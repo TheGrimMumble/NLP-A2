@@ -12,28 +12,40 @@ import numpy as np
 from sklearn.preprocessing import normalize
 from generate import GENERATE
 import random
-
+import codecs
 
 vocab = codecs.open("brown_vocab_100.txt")
 
-#load the indices dictionary
+# load the indices dictionary
 word_index_dict = {}
 for i, line in enumerate(vocab):
-    #TODO: import part 1 code to build dictionary
+    line = line.rstrip()
+    word_index_dict[line] = i
 
 f = codecs.open("brown_100.txt")
 
+# initiate matrix with the counts
+counts = np.zeros((len(word_index_dict), len(word_index_dict)))
 
-counts = #TODO: initialize numpy 0s array
+# iterate through file and update counts
+for line in f:
+    words = line.lower().split()
+    previous_word = '<s>'
+    for word in words[1:]:
+        # add 1 to the counts at the correct index
+        index_first_word = word_index_dict[previous_word]
+        index_second_word = word_index_dict[word]
+        counts[index_first_word, index_second_word] += 1
+        previous_word = word
 
+# normalize counts
+probs = normalize(counts, norm='l1', axis=1)
 
-#TODO: iterate through file and update counts
-
-#TODO: normalize counts
-
-
-#TODO: writeout bigram probabilities
-
-
+# writeout bigram probabilities
+with open('bigram_probs.txt', 'w') as wf:
+    wf.write('p(the | all): ' + str(probs[word_index_dict['all'], word_index_dict['the']]) + '\n')
+    wf.write('p(jury | the): ' + str(probs[word_index_dict['the'], word_index_dict['jury']]) + '\n')
+    wf.write('p(campaign | the): ' + str(probs[word_index_dict['the'], word_index_dict['campaign']]) + '\n')
+    wf.write('p(calls | anonymous): ' + str(probs[word_index_dict['anonymous'], word_index_dict['calls']]))
 
 f.close()
