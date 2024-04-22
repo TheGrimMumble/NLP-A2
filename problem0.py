@@ -1,18 +1,31 @@
 from nltk.corpus import brown
 from nltk.tokenize import sent_tokenize
+from collections import Counter
 import matplotlib, re, time
 
-print(len(brown.words()))
-
-for k in range(1, 4):
-    start = time.time()
-    length = 10 ** k
-    dic = {brown.words()[i]: 0 for i in range(length)}
-    for i in range(length):
-        dic[brown.words()[i]] += 1
+def words_in_corpus():
+    all_words = list(brown.words())
+    dic = Counter(all_words)
     final = sorted(dic.items(), key=lambda value: value[1], reverse=True)
-    end = time.time()
-    print(final[0], f'Time:{end - start}')
+    for i in range(30):
+        print(final[i])
+    pass
+
+words_in_corpus()
+
+def testing():
+    print(len(brown.words()))
+    for k in range(1, 4):
+        start = time.time()
+        length = 10 ** k
+        dic = {brown.words()[i]: 0 for i in range(length)}
+        for i in range(length):
+            dic[brown.words()[i]] += 1
+        final = sorted(dic.items(), key=lambda value: value[1], reverse=True)
+        end = time.time()
+        print(final[0], f'Time:{end - start}')
+
+testing()
 
 def unique_words_by_frequency(corpus_sentences, only_words=True):
     word_def = re.compile("^[a-zA-Z]+[\-']*$")
