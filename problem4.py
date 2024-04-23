@@ -13,7 +13,6 @@ from sklearn.preprocessing import normalize
 from generate import GENERATE
 import random
 import codecs
-import pandas as pd
 
 vocab = codecs.open("brown_vocab_100.txt")
 
@@ -40,8 +39,6 @@ for line in f:
         previous_word = word
 
 counts += 0.1
-print('the:', counts[604,])
-print('anonymous:', counts[34,])
 
 # normalize counts
 probs = normalize(counts, norm='l1', axis=1)
@@ -52,8 +49,5 @@ with open('smooth_probs.txt', 'w') as wf:
     wf.write('p(jury | the): ' + str(probs[word_index_dict['the'], word_index_dict['jury']]) + '\n')
     wf.write('p(campaign | the): ' + str(probs[word_index_dict['the'], word_index_dict['campaign']]) + '\n')
     wf.write('p(calls | anonymous): ' + str(probs[word_index_dict['anonymous'], word_index_dict['calls']]))
-
-counts_df = pd.DataFrame(counts)
-counts_df.to_csv('counts_smooth.csv')
 
 f.close()
