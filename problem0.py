@@ -1,5 +1,6 @@
 from nltk.corpus import brown
 from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
 from collections import Counter
 import matplotlib.pyplot as plt
 import numpy as np
@@ -42,22 +43,23 @@ def collect_data(WORDS=False, SENTENCES=False):
     if SENTENCES:
         corpus_sentences = list(brown.sents())
         all_corpus_sents = [' '.join(corpus_sentences[i]) for i in range(len(corpus_sentences))]
-        tokens = [word_tokenize(s) for s in all_corpus_sents]
+        tokens = [tok for sen_tok in [word_tokenize(s) for s in all_corpus_sents] for tok in sen_tok]
         mean_words_per_sent = sum([len(w) for w in corpus_sentences]) / len(corpus_sentences)
         # run default part of speech tagger, id ten most frequent POS tags
-        POS_tags = "MISSING! NEED TO IMPLEMENT THIS CODE"
-        return len(tokens), round(mean_words_per_sent, 2), POS_tags
+        unique_tokens = 't'
+        POS_tags = [pos_tag(t) for t in tokens]
+        return len(tokens), round(mean_words_per_sent, 2), POS_tags, tokens
 
 
 word_frequencies, unique_words, sum_all_words, average_word_len = collect_data(WORDS=True)
-sum_tokens, average_words_per_sent, POS_tags = collect_data(SENTENCES=True)
+sum_tokens, average_words_per_sent, POS_tags, tokens = collect_data(SENTENCES=True)
 
 info_text = f'Number of unique words: {unique_words}\nTotal number of words: {sum_all_words}\n' \
         f'Average word length: {average_word_len}\nNumber of Tokens: {sum_tokens}\n' \
         f'Average number of words per sentence: {average_words_per_sent}' \
         f'Ten most frequent POS tags: {POS_tags}'
 
-print(info_text)
+print(tokens)
 plot_zipfs_law(word_frequencies)
 plot_zipfs_law(word_frequencies, log_log=True)
 
