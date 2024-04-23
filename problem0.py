@@ -7,63 +7,78 @@ import numpy as np
 import time
 
 
-def unique_words_by_frequency(input_word_list):
-    all_lower_case = [w.lower() for w in input_word_list]
-    frequency_counter = Counter(all_lower_case)
-    return sorted(frequency_counter.items(), key=lambda value: value[1], reverse=True)
-
-
-def plot_zipfs_law(input_data, log_log=False):
+def plot_zipfs_law(genre, input_data, log_log=False):
+    plot_file_name = 'zipf_plot_' + str(genre)
+    plot_title = f"Zipf's Law | Genre: {genre}"
     x, y = zip(*input_data)
     if log_log:
         x = np.log(np.arange(1, int(len(x)) + 1))
         y = np.log(np.array(y))
+        plot_file_name += '_log_log'
+        plot_title += ' | Log(x) Log(y) Plot'
     plt.plot(x, y, linestyle='-', linewidth=2)
     plt.xticks([])
-    plt.title("Zipf's Law")
+    plt.title(plot_title)
     plt.xlabel("Position in list")
     plt.ylabel("Word-frequencies")
-    plt.show()
+    plt.savefig(f'{plot_file_name}.png')
+    plt.close()
+
+
+def collect_data(genre, WORDS=False, SENTENCES=False):
+    if WORDS:
+        # prepare list of all words in lower-case
+        corpus_words = list(brown.words(categories=genre))
+        corpus_lower_case = [w.lower() for w in corpus_words]
+
+        # calculate mean word length, make word frequency list and list of all tokens
+        average_word_length = sum([len(w) for w in corpus_words]) / len(corpus_words)
+        word_frequency_count = sorted(Counter(corpus_lower_case).items(), key=lambda count: count[1], reverse=True)
+        corpus_tokens = word_tokenize(' '.join(corpus_lower_case))
+
+        # find 10 most frequent POS tags
+        PartOfSpeech = pos_tag(corpus_tokens)
+        POS_words, POS_tags = zip(*PartOfSpeech)
+        ten_most_frequent_POS = sorted(Counter(POS_tags).items(), key=lambda count: count[1], reverse=True)[0:10]
+
+        return word_frequency_count, len(word_frequency_count), len(corpus_words), \
+                round(average_word_length, 2), len(corpus_tokens), ten_most_frequent_POS
+    
+    if SENTENCES:
+        # prepare list of all corpus sentences and calculate mean words per sentence
+        corpus_sentences = list(brown.sents(categories=genre))
+        average_words_per_sent = sum([len(w) for w in corpus_sentences]) / len(corpus_sentences)
+
+        return round(average_words_per_sent, 2)
 
 
 def test_process_time():
     start = time.time()
+
     # paste test function here
+    example_function = collect_data('science_fiction', SENTENCES=True)
+
     end = time.time()
     print(f'Processing time: {end - start}')
 
 
-def collect_data(WORDS=False, SENTENCES=False):
-    if WORDS:
-        corpus_words = list(brown.words())
-        word_frequencies = unique_words_by_frequency(corpus_words)
-        mean_word_length = sum([len(w) for w in corpus_words]) / len(corpus_words)
-        return word_frequencies, len(word_frequencies), len(corpus_words), \
-                round(mean_word_length, 2)
-    if SENTENCES:
-        corpus_sentences = list(brown.sents())
-        all_corpus_sents = [' '.join(corpus_sentences[i]) for i in range(len(corpus_sentences))]
-        tokens = [tok for sen_tok in [word_tokenize(s) for s in all_corpus_sents] for tok in sen_tok]
-        mean_words_per_sent = sum([len(w) for w in corpus_sentences]) / len(corpus_sentences)
-        # run default part of speech tagger, id ten most frequent POS tags
-        unique_tokens = 't'
-        POS_tags = [pos_tag(t) for t in tokens]
-        return len(tokens), round(mean_words_per_sent, 2), POS_tags, tokens
+genres = [None, 'humor', 'science_fiction']
 
-
-word_frequencies, unique_words, sum_all_words, average_word_len = collect_data(WORDS=True)
-sum_tokens, average_words_per_sent, POS_tags, tokens = collect_data(SENTENCES=True)
-
-info_text = f'Number of unique words: {unique_words}\nTotal number of words: {sum_all_words}\n' \
-        f'Average word length: {average_word_len}\nNumber of Tokens: {sum_tokens}\n' \
-        f'Average number of words per sentence: {average_words_per_sent}' \
-        f'Ten most frequent POS tags: {POS_tags}'
-
-print(tokens)
-plot_zipfs_law(word_frequencies)
-plot_zipfs_law(word_frequencies, log_log=True)
+with open("zipfs_law_info.txt", "w") as file:
+    for genre in genres:
+        word_frequencies, types_ie_unique_words, sum_all_words, average_word_length, sum_tokens, POS_tags \
+            = collect_data(genre, WORDS=True)
+        average_words_per_sent = collect_data(genre, SENTENCES=True)
+        info_text = f'Genre: {genre}\n' \
+                f'Number of unique words: {types_ie_unique_words}\nTotal number of words: {sum_all_words}\n' \
+                f'Average word length: {average_word_length}\nNumber of Tokens: {sum_tokens}\n' \
+                f'Average number of words per sentence: {average_words_per_sent}\n' \
+                f'Ten most frequent POS tags (POS, count):\n{POS_tags}\n\n'
+        file.write(info_text)
+        plot_zipfs_law(genre, word_frequencies)
+        plot_zipfs_law(genre, word_frequencies, log_log=True)
 
 
 """
-What counts as words? E.g. "It's", "September-October", "Full-time"
+What counts as words? E.g. "It's", "September-October", "Full-time", ' "" ', " `` "
 """
