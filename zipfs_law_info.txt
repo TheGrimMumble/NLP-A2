@@ -1,5 +1,5 @@
 Genre: None
-Number of unique words: 49815
+Number of types (unique words): 49815
 Total number of words: 1161192
 Average word length: 4.28
 Number of Tokens: 1173780
@@ -8,7 +8,7 @@ Ten most frequent POS tags (POS, count):
 [('NN', 208427), ('IN', 136402), ('DT', 116698), ('JJ', 94264), ('NNS', 61272), (',', 58336), ('.', 56523), ('RB', 50152), ('VBD', 46243), ('PRP', 40580)]
 
 Genre: humor
-Number of unique words: 4755
+Number of types (unique words): 4755
 Total number of words: 21695
 Average word length: 4.04
 Number of Tokens: 21982
@@ -17,7 +17,7 @@ Ten most frequent POS tags (POS, count):
 [('NN', 3598), ('IN', 2289), ('DT', 1975), ('JJ', 1552), (',', 1331), ('VBD', 1237), ('.', 1117), ('RB', 1104), ('PRP', 1048), ('NNS', 864)]
 
 Genre: science_fiction
-Number of unique words: 3032
+Number of types (unique words): 3032
 Total number of words: 14470
 Average word length: 3.99
 Number of Tokens: 14631

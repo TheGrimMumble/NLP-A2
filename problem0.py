@@ -70,7 +70,7 @@ with open("zipfs_law_info.txt", "w") as file:
             = collect_data(genre, WORDS=True)
         average_words_per_sent = collect_data(genre, SENTENCES=True)
         info_text = f'Genre: {genre}\n' \
-                f'Number of unique words: {types_ie_unique_words}\nTotal number of words: {sum_all_words}\n' \
+                f'Number of types (unique words): {types_ie_unique_words}\nTotal number of words: {sum_all_words}\n' \
                 f'Average word length: {average_word_length}\nNumber of Tokens: {sum_tokens}\n' \
                 f'Average number of words per sentence: {average_words_per_sent}\n' \
                 f'Ten most frequent POS tags (POS, count):\n{POS_tags}\n\n'
