@@ -49,3 +49,27 @@ with open('bigram_probs.txt', 'w') as wf:
     wf.write('p(calls | anonymous): ' + str(probs[word_index_dict['anonymous'], word_index_dict['calls']]))
 
 f.close()
+
+# initialize the joint probabilities of the 2 sentences as 1
+bigram_probs_toy = [1, 1]
+n_bigrams = [0, 0]
+perplexity = []
+with open('toy_corpus.txt') as file:
+    for i, line in enumerate(file):
+        previous_word = '<s>'
+        for word in line.split()[1:]:
+            # get the index of the word and then the probability
+            word_index = word_index_dict[word.lower()]
+            previous_word_index = word_index_dict[previous_word]
+            prob = probs[previous_word_index, word_index]
+            # update the joint probability of this sentence by multiplying it
+            bigram_probs_toy[i] *= prob
+            previous_word = word.lower()
+            n_bigrams[i] += 1
+        # compute the perplexity of this sentence
+        perplexity.append(1 / pow(bigram_probs_toy[i], 1.0 / n_bigrams[i]))
+
+# write the perplexities to a text file
+with open('bigram_eval.txt', 'w') as wf:
+    wf.write(str(perplexity[0]) + '\n')
+    wf.write(str(perplexity[1]))

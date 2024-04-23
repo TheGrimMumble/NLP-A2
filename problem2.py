@@ -11,7 +11,6 @@ DO NOT SHARE/DISTRIBUTE SOLUTIONS WITHOUT THE INSTRUCTOR'S PERMISSION
 import numpy as np
 from generate import GENERATE
 
-
 vocab = "brown_vocab_100.txt"
 word_index_dict = {}
 
@@ -31,10 +30,28 @@ with open("brown_100.txt") as text:
             current_word = w.lower()
             counts[word_index_dict[current_word]] += 1
 
-# print and normalize counts.
-print(counts)
-
 probs = counts / np.sum(counts)
 
 with open("unigram_probs.txt", "w") as file:
     file.write(str(probs))
+
+# initialize the joint probabilities of the 2 sentences as 1 and the lenghts to 0
+unigram_probs_toy = [1, 1]
+sent_len = []
+perplexity = []
+with open('toy_corpus.txt') as file:
+    for i, line in enumerate(file):
+        sent_len.append(len(line.split()))
+        for word in line.split():
+            # get the index of the word and then the probability
+            word_index = word_index_dict[word.lower()]
+            word_prob = probs[word_index]
+            # update the joint probability of this sentence by multiplying it
+            unigram_probs_toy[i] *= word_prob
+        # compute the perplexity of this sentence
+        perplexity.append(1 / pow(unigram_probs_toy[i], 1.0 / sent_len[i]))
+
+# write the perplexities to a text file
+with open('unigram_eval.txt', 'w') as wf:
+    wf.write(str(perplexity[0]) + '\n')
+    wf.write(str(perplexity[1]))
