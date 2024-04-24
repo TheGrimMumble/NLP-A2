@@ -75,3 +75,9 @@ with open('toy_corpus.txt') as file:
 with open('smoothed_eval.txt', 'w') as wf:
     wf.write(str(perplexity[0]) + '\n')
     wf.write(str(perplexity[1]))
+
+# generate and write 10 sentences to file
+with open('smoothed_generation.txt', 'w') as wf:
+    for i in range(10):
+        STR = GENERATE(word_index_dict, probs, "bigram", max_words=20, start_word="<s>")
+        wf.write(STR + "\n")
