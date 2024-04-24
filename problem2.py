@@ -55,3 +55,6 @@ with open('toy_corpus.txt') as file:
 with open('unigram_eval.txt', 'w') as wf:
     wf.write(str(perplexity[0]) + '\n')
     wf.write(str(perplexity[1]))
+
+# generate 10 sentences
+GENERATE(word_index_dict, probs, "unigram", max_words=10)
