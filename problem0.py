@@ -80,5 +80,7 @@ with open("zipfs_law_info.txt", "w") as file:
 
 
 """
-What counts as words? E.g. "It's", "September-October", "Full-time", ' "" ', " `` "
+What counts as words, tokens and POS? E.g. "It's", "September-October", "Full-time", ' "" ', " `` "
+
+For the plot, we should take the logarithm of both x and y, correct?
 """
