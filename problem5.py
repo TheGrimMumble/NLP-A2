@@ -1,43 +1,40 @@
-word_pairs = ['in the', 'in the', 'the jury', 'the jury', 'jury said', 'agriculture teacher']
-target_words = ['past', 'time', 'said', 'recommended', 'that', ',']
+bigrams = [('in', 'the'), ('in', 'the'), ('the', 'jury'), ('the', 'jury'), ('jury', 'said'), ('agriculture', 'teacher')]
+trigrams = [('in', 'the', 'past'), ('in', 'the', 'time'), ('the', 'jury', 'said'), ('the', 'jury', 'recommended'), ('jury', 'said', 'that'), ('agriculture', 'teacher', ',')]
 
-size_of_vocab = []
+vocabulary = []
 
-with open('brown_vocab_100.txt') as data:
-    for w in data:
-        #if not '<s>' in w and not '</s>' in w:
-        size_of_vocab.append(w)
+with open('brown_vocab_100.txt') as vocab:
+    for word in vocab:
+        #if not '<s>' in word and not '</s>' in word:
+        vocabulary.append(word)
 
-def find_probabilities(preceeding_words, target_word, smoothing=False, alpha=1):
+
+def find_probabilities(bigram, trigram, smoothing=False, alpha=1):
     with open('brown_100.txt') as corpus:
-        preceeding_words_count = 0
-        target_words_count = 0
-        for s in corpus:
-            preceeding_words_count += s.count(preceeding_words)
-            target_words_count += s.count(target_word)
-            """
-            if preceeding_words in s.lower():
-                preceeding_words_count += 1
-            if f'{preceeding_words} {target_word}' in s.lower():
-                target_words_count += 1
-            """
+        bigram_count = 0
+        trigram_count = 0
+        for sentence in corpus:
+            words = sentence.lower().split()
+            for i in range(len(words) - 2):
+                if words[i] == bigram[0] and words[i + 1] == bigram[1]:
+                    bigram_count += 1
+                if words[i] == trigram[0] and words[i + 1] == trigram[1] and words[i + 2] == trigram[2]:
+                    trigram_count += 1
     if smoothing:
-        return (target_words_count + alpha) / (preceeding_words_count + alpha * len(size_of_vocab))
+        return (trigram_count + alpha) / (bigram_count + alpha * len(vocabulary))
     else:
-        return target_words_count / preceeding_words_count
+        return trigram_count / bigram_count
 
 
 turn_smoothing_off_on = [False, True]
 
 for off_on in turn_smoothing_off_on:
-    print()
-    for index, pairs in enumerate(word_pairs):
-        probability = find_probabilities(pairs, target_words[index], smoothing=off_on, alpha=0.1)
-        print(f'P({target_words[index]} | {pairs}) = {probability}')
+    print(f'\nSmoothing: {off_on}')
+    for index, bigram in enumerate(bigrams):
+        probability = find_probabilities(bigram, trigrams[index], smoothing=off_on, alpha=0.1)
+        print(f'P({trigrams[index][-1]} | {bigram[0]} {bigram[1]}) = {probability}')
 
 
 """
-There must be something wrong. I thought the way to calculate the probability was: P(w3 w2 w1) / P(w2 w1), not P(w3) / P(w2 w1)
-
 Are '<s>' and '</s>' counted as part of the vocabulary?
 """
