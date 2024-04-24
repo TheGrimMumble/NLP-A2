@@ -57,4 +57,7 @@ with open('unigram_eval.txt', 'w') as wf:
     wf.write(str(perplexity[1]))
 
 # generate 10 sentences
-GENERATE(word_index_dict, probs, "unigram", max_words=10)
+STR = GENERATE(word_index_dict, probs, "unigram", max_words=10, "<s>")
+
+with open('unigram_generation.txt', 'w') as wf:
+    wf.write(STR)
