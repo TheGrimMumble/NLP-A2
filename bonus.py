@@ -1,5 +1,6 @@
 from collections import Counter
 import numpy as np
+from nltk.corpus import brown
 
 
 def load_corpus(corpus_file):
@@ -34,21 +35,23 @@ def pmi(word_pair_dict, word_frequencies, corpus_len):
     return word_pair_pmi
 
 
-corpus = load_corpus('brown_100.txt')
+corpus = load_corpus("brown_100.txt")
 vocabulary, vocabulary_with_counts = find_filtered_vocabulary(corpus)
 word_pair_list = find_word_pairs(corpus, vocabulary)
 full_pmi_list = pmi(word_pair_list, vocabulary_with_counts, len(corpus))
 sorted_pmi = sorted(full_pmi_list.items(), key=lambda pmi: pmi[1], reverse=True)
-twenty_highest = sorted_pmi[:20]
-twenty_lowest = sorted_pmi[-20:]
-print(twenty_highest)
-print(len(twenty_highest))
-print(twenty_lowest)
-print(len(twenty_lowest))
+twenty_high_low = (('20 Word Pairs with Highest PMI:\n', sorted_pmi[:20]), ('\n20 Word Pairs with Lowest PMI:\n', sorted_pmi[-20:]))
 
+with open("pmi_high_low.txt", "w") as file:
+    for high_low in twenty_high_low:
+        file.write(high_low[0])
+        file.write(f'{"Word Pair:":<24}PMI:\n')
+        for word_pair_pmi in high_low[1]:
+            info = f'{str(word_pair_pmi[0]):<24}{word_pair_pmi[1]}\n'
+            file.write(info)
 
 """
 Are we supposed to run it on the FULL brown corpus or only brown_100.txt?
 
-We are supposed to just use the counts of the word pairs and words, correct?
+We are supposed to just use the counts of the word pairs and words in the equation (i.e. use the approximation), correct?
 """

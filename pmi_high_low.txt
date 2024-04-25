@@ -1,0 +1,45 @@
+20 Word Pairs with Highest PMI:
+Word Pair:              PMI:
+('fulton', 'county')    4.256
+('jury', 'said')        3.822
+('there', 'was')        3.622
+('will', 'be')          3.514
+('.', '</s>')           3.206
+('</s>', '<s>')         3.196
+('election', 'was')     2.975
+('which', 'has')        2.944
+('said', 'there')       2.928
+('by', 'fulton')        2.87
+('on', 'fulton')        2.87
+('county', 'has')       2.801
+('said', 'it')          2.787
+('as', 'his')           2.761
+('as', 'state')         2.761
+('his', 'election')     2.687
+('it', 'was')           2.669
+('``', 'has')           2.646
+('it', 'has')           2.564
+('``', 'there')         2.551
+
+20 Word Pairs with Lowest PMI:
+Word Pair:              PMI:
+(',', 'a')              0.443
+(',', 'was')            0.443
+('and', 'in')           0.433
+('jury', '.')           0.432
+('it', ',')             0.389
+(',', 'in')             0.338
+('of', 'a')             0.311
+("''", 'to')            0.277
+('``', 'to')            0.248
+('as', 'the')           0.196
+('and', 'the')          0.171
+('to', 'the')           0.14
+('and', 'a')            0.133
+("''", 'of')            0.08
+(',', 'that')           0.002
+('the', '``')           -0.101
+('was', 'the')          -0.129
+('be', 'the')           -0.283
+('said', 'the')         -0.417
+('<s>', 'in')           -0.483
