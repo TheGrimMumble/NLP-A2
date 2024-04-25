@@ -49,4 +49,6 @@ print(len(twenty_lowest))
 
 """
 Are we supposed to run it on the FULL brown corpus or only brown_100.txt?
+
+We are supposed to just use the counts of the word pairs and words, correct?
 """
