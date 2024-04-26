@@ -36,5 +36,5 @@ for off_on in turn_smoothing_off_on:
 
 
 """
-Are '<s>' and '</s>' counted as part of the vocabulary?
+Are '<s>' and '</s>' counted as part of the vocabulary? - these are counted as words
 """

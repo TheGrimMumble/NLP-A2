@@ -35,7 +35,7 @@ def pmi(word_pair_dict, word_frequencies, corpus_len):
     return word_pair_pmi
 
 
-corpus = load_corpus("brown_100.txt")
+corpus = list(brown.words())
 vocabulary, vocabulary_with_counts = find_filtered_vocabulary(corpus)
 word_pair_list = find_word_pairs(corpus, vocabulary)
 full_pmi_list = pmi(word_pair_list, vocabulary_with_counts, len(corpus))
@@ -51,7 +51,9 @@ with open("pmi_high_low.txt", "w") as file:
             file.write(info)
 
 """
-Are we supposed to run it on the FULL brown corpus or only brown_100.txt?
+Are we supposed to run it on the FULL brown corpus or only brown_100.txt? - probably the whole corpus
 
-We are supposed to just use the counts of the word pairs and words in the equation (i.e. use the approximation), correct?
+Are we supposed to just use the counts of the word pairs and words in the equation (i.e. use the approximation)? - it is good
+
+Are we supposed to take the absolute value of pmi, or leave in the negative values? - include negative
 """
