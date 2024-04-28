@@ -30,6 +30,8 @@ with open("brown_100.txt") as text:
             current_word = w.lower()
             counts[word_index_dict[current_word]] += 1
 
+print(counts)
+
 probs = counts / np.sum(counts)
 
 with open("unigram_probs.txt", "w") as file:
