@@ -35,6 +35,3 @@ for off_on in turn_smoothing_off_on:
         print(f'P({trigrams[index][-1]} | {bigram[0]} {bigram[1]}) = {probability}')
 
 
-"""
-Are '<s>' and '</s>' counted as part of the vocabulary? - these are counted as words
-"""

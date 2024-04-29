@@ -49,11 +49,3 @@ with open("pmi_high_low.txt", "w") as file:
         for word_pair_pmi in high_low[1]:
             info = f'{str(word_pair_pmi[0]):<24}{word_pair_pmi[1]}\n'
             file.write(info)
-
-"""
-Are we supposed to run it on the FULL brown corpus or only brown_100.txt? - probably the whole corpus
-
-Are we supposed to just use the counts of the word pairs and words in the equation (i.e. use the approximation)? - it is good
-
-Are we supposed to take the absolute value of pmi, or leave in the negative values? - include negative
-"""

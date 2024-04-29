@@ -78,13 +78,3 @@ with open("zipfs_law_info.txt", "w") as file:
         plot_zipfs_law(genre, word_frequencies)
         plot_zipfs_law(genre, word_frequencies, log_log=True)
 
-
-"""
-What counts as words, tokens and POS? E.g. "It's", "September-October", "Full-time", ' "" ', " `` "
-- will be informed about this
-come up with a definition and use that consistently
-also make sure to write something about where the corpus comes from, what it includes, etc.
-
-For the plot, we should take the logarithm of both x and y, correct? - yes
-
-"""
